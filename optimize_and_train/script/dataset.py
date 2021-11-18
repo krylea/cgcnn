@@ -72,17 +72,22 @@ class CgcnnDatasetDepth:
         self.atom_init.write(cif_path)
         self.filename = filename
 
-
+import json
+import random
 
 if __name__ == '__main__':
     """self-test for generating database"""
     # prepare directory
-    gga = 'ps'
-    prop = 'se'
-    selection = 'random'    # or selectmpid
-    main_dir = '/home/wzhong1/cgcnn/new_0815/surf_en_filter/main_%s_%s_%s' % (gga, prop, selection)
+    #gga = 'ps'
+    #prop = 'se'
+    #selection = 'random'    # or selectmpid
+    #main_dir = '/home/wzhong1/cgcnn/new_0815/surf_en_filter/main_%s_%s_%s' % (gga, prop, selection)
+    main_dir = "test-data/co"
     root_dir = os.path.join(main_dir, 'root_dir')
     prepare_root_dir(main_dir)
+
+    with open('test-data/co/co_data.json', 'r') as file_handle:
+        docs = json.load(file_handle)
 
     # generating cif files for randomized docs and class object
     # LATER: PASS CLASS AS FUNCTION ARGUEMENT ! THEN WRITE IT AS FUNCTION IN CGCNNDATASET.PY
