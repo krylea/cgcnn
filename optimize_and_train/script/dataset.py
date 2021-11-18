@@ -29,7 +29,7 @@ class CgcnnDatabaseSE:
     """make id.cif and id_prop.csv required for cgcnn in root_dir"""
     def __init__(self, doc, root_dir):
         self.doc = doc
-        self.id = str(doc['mongo_id']) 
+        self.id = str(doc['mpid']) 
         self.atom_init = mongo.make_atoms_from_doc(doc['initial_configuration'])
         self.root_dir = root_dir
 
@@ -74,6 +74,7 @@ class CgcnnDatasetDepth:
 
 import json
 import random
+import tqdm
 
 if __name__ == '__main__':
     """self-test for generating database"""
@@ -93,7 +94,7 @@ if __name__ == '__main__':
     # LATER: PASS CLASS AS FUNCTION ARGUEMENT ! THEN WRITE IT AS FUNCTION IN CGCNNDATASET.PY
     random.shuffle(docs)
     se = []
-    for doc in docs:
+    for doc in tqdm.tqdm(docs):
         x = CgcnnDatabaseSE(doc, root_dir)
         x.create_cif()
         x.define_prop()
