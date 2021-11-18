@@ -35,7 +35,7 @@ class CgcnnDatabaseSE:
 
     def define_prop(self):
         """prop as surface energy, expected to be changed"""
-        self.prop = self.doc['intercept']
+        self.prop = self.doc['results']['energy']
 
     def create_cif(self):
         """write doc initial configuration into cif file"""
