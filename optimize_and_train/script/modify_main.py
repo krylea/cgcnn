@@ -191,12 +191,12 @@ def train(args, train_loader, model, criterion, optimizer, epoch, normalizer):
         # measure accuracy and record loss
         if args.task == 'regression':
             mae_error = mae(normalizer.denorm(output.data.cpu()), target)
-            losses.update(loss.item(), target.size(0))
+            losses.update(loss.data.cpu()[0], target.size(0))
             mae_errors.update(mae_error, target.size(0))
         else:
             accuracy, precision, recall, fscore, auc_score =\
                 class_eval(output.data.cpu(), target)
-            losses.update(loss.item(), target.size(0))
+            losses.update(loss.data.cpu()[0], target.size(0))
             accuracies.update(accuracy, target.size(0))
             precisions.update(precision, target.size(0))
             recalls.update(recall, target.size(0))
@@ -289,7 +289,7 @@ def validate(args, val_loader, model, criterion, normalizer, test=False):
         # measure accuracy and record loss
         if args.task == 'regression':
             mae_error = mae(normalizer.denorm(output.data.cpu()), target)
-            losses.update(loss.item(), target.size(0))
+            losses.update(loss.data.cpu()[0], target.size(0))
             mae_errors.update(mae_error, target.size(0))
             if test:
                 test_pred = normalizer.denorm(output.data.cpu())
@@ -300,7 +300,7 @@ def validate(args, val_loader, model, criterion, normalizer, test=False):
         else:
             accuracy, precision, recall, fscore, auc_score =\
                 class_eval(output.data.cpu(), target)
-            losses.update(loss.item(), target.size(0))
+            losses.update(loss.data.cpu()[0], target.size(0))
             accuracies.update(accuracy, target.size(0))
             precisions.update(precision, target.size(0))
             recalls.update(recall, target.size(0))
