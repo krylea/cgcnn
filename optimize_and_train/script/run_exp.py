@@ -29,7 +29,7 @@ H_HYPERPARAMS = {
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--adsorbate', type=str, choices=['co', 'h'], default='co')
-    parser.add_argument('--optim', type=str, choices=['sgd', 'adam'], default='sgd')
+    parser.add_argument('--optim', type=str, choices=['SGD', 'Adam'], default='Adam')
     parser.add_argument('--atom_fea_len', type=int, default=-1)
     parser.add_argument('--batch_size', type=int, default=-1)
     parser.add_argument('--disable_cuda', action='store_true')
