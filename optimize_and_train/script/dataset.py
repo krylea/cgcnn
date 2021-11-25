@@ -104,5 +104,5 @@ if __name__ == '__main__':
     pd.DataFrame(data=se).to_csv(os.path.join(root_dir, 'id_prop.csv'), index=False, header=False, float_format='%1.6f')
     print('%d objects generated' % len(se))
 
-with open('data/sample-regression/atom_init.json', 'r') as file_handle:
-    docs = json.load(file_handle)
+#with open('data/sample-regression/atom_init.json', 'r') as file_handle:
+#    docs = json.load(file_handle)
