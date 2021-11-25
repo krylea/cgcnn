@@ -26,6 +26,8 @@ from modify_data import collate_pool, get_train_val_test_loader
 
 #### change: load dataset outside function and pass it as argumnet
 def main_cgcnn(args, dataset):
+    outdir = os.path.join('runs', args.adsorbate)
+
     best_mae_error =  1e10
 
     collate_fn = collate_pool
@@ -109,7 +111,7 @@ def main_cgcnn(args, dataset):
         train_losses.append(train_loss)
         
         # evaluate on validation set
-        val_mae, val_loss, mae_error = validate(args, val_loader, model, criterion, normalizer)
+        val_mae, val_loss, mae_error = validate(args, val_loader, model, criterion, normalizer, outdir)
         val_mae_errors.append(val_mae)
         val_losses.append(val_loss)
 
@@ -126,7 +128,7 @@ def main_cgcnn(args, dataset):
         else:
             is_best = mae_error > best_mae_error
             best_mae_error = max(mae_error, best_mae_error)
-        save_checkpoint({
+        save_checkpoint(outdir, {
             'epoch': epoch + 1,
             'state_dict': model.state_dict(),
             'best_mae_error': best_mae_error,
@@ -137,9 +139,9 @@ def main_cgcnn(args, dataset):
 
     # test best model
     print('---------Evaluate Model on Test Set---------------')
-    best_checkpoint = torch.load('model_best_train_%d.pth.tar'%(args.train_size))
+    best_checkpoint = torch.load(os.path.join(outdir, 'model_best_train_%d.pth.tar'%(args.train_size)))
     model.load_state_dict(best_checkpoint['state_dict'])
-    test_mae, test_loss, test_mae_avg = validate(args, test_loader, model, criterion, normalizer, test=True)
+    test_mae, test_loss, test_mae_avg = validate(args, test_loader, model, criterion, normalizer, outdir, test=True)
 
     return epoches, train_mae_errors, train_losses, val_mae_errors, val_losses, test_mae, test_loss
 
@@ -241,7 +243,7 @@ def train(args, train_loader, model, criterion, optimizer, epoch, normalizer):
     #### change: return train mae and loss
     return mae_errors, losses
 
-def validate(args, val_loader, model, criterion, normalizer, test=False):
+def validate(args, val_loader, model, criterion, normalizer, outdir, test=False):
     batch_time = AverageMeter()
     losses = AverageMeter()
     if args.task == 'regression':
@@ -342,7 +344,7 @@ def validate(args, val_loader, model, criterion, normalizer, test=False):
     if test:
         star_label = '**'
         import csv
-        with open('test_results_train_%d.csv'%(args.train_size), 'w') as f:
+        with open(os.path.join(outdir, 'test_results_train_%d.csv'%(args.train_size), 'w')) as f:
             writer = csv.writer(f)
             for cif_id, target, pred in zip(test_cif_ids, test_targets,
                                             test_preds):
@@ -426,12 +428,12 @@ class AverageMeter(object):
         self.count += n
         self.avg = self.sum / self.count
 
-def save_checkpoint(state, is_best, num_train):
+def save_checkpoint(outdir, state, is_best, num_train):
     #### change filename by train size
-    filename = 'checkpoint_train_%d.pth.tar'%(num_train)
+    filename = os.path.join(outdir, 'checkpoint_train_%d.pth.tar'%(num_train))
     torch.save(state, filename)
     if is_best:
-        shutil.copyfile(filename, 'model_best_train_%d.pth.tar'%(num_train))
+        shutil.copyfile(filename, os.path.join(outdir,'model_best_train_%d.pth.tar'%(num_train)))
 
 def adjust_learning_rate(optimizer, epoch, k):
     """Sets the learning rate to the initial LR decayed by 10 every k epochs"""
