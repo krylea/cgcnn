@@ -346,7 +346,7 @@ def validate(args, val_loader, model, criterion, normalizer, outdir, test=False)
     if test:
         star_label = '**'
         import csv
-        with open(os.path.join(outdir, 'test_results_train_%d.csv'%(args.train_size), 'w')) as f:
+        with open(os.path.join(outdir, 'test_results_train_%d.csv'%(args.train_size)), 'w') as f:
             writer = csv.writer(f)
             for cif_id, target, pred in zip(test_cif_ids, test_targets,
                                             test_preds):
