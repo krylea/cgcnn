@@ -27,6 +27,8 @@ from modify_data import collate_pool, get_train_val_test_loader
 #### change: load dataset outside function and pass it as argumnet
 def main_cgcnn(args, dataset):
     outdir = os.path.join('runs', args.adsorbate)
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
     best_mae_error =  1e10
 
