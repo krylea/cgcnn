@@ -35,7 +35,7 @@ class CgcnnDatabaseSE:
 
     def define_prop(self):
         """prop as surface energy, expected to be changed"""
-        self.prop = self.doc['results']['energy']
+        self.prop = self.doc['energy']
 
     def create_cif(self):
         """write doc initial configuration into cif file"""
@@ -103,3 +103,6 @@ if __name__ == '__main__':
     # generating csv files
     pd.DataFrame(data=se).to_csv(os.path.join(root_dir, 'id_prop.csv'), index=False, header=False, float_format='%1.6f')
     print('%d objects generated' % len(se))
+
+with open('data/sample-regression/atom_init.json', 'r') as file_handle:
+    docs = json.load(file_handle)

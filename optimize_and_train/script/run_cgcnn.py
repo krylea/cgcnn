@@ -80,4 +80,3 @@ def predict_model(modelpath, cifpath):
                               cuda=True)
     predict_cgcnn(args)
     return()
-
