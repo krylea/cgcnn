@@ -9,4 +9,4 @@
 #SBATCH --mem=25GB
 #SBATCH --exclude=gpu109
 
-python3 optimize_and_train/script/run_exp.py --adsorbate $1 --root_dir "test-data/${1}/root_dir"
+python3 optimize_and_train/script/run_exp.py --adsorbate $1 --root_dir "test-data/${1}/root_dir" --run_name $2
