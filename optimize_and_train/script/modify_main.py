@@ -101,7 +101,7 @@ def main_cgcnn(args, dataset):
 
     #scheduler = MultiStepLR(optimizer, milestones=args.lr_milestones,
     #                        gamma=0.1)
-    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=args.T0, T_mult=args.Tmult)
 
     #### change: store epoch, mae and loss
     epoches, train_mae_errors, train_losses = [], [], []
