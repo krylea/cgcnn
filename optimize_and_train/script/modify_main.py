@@ -79,7 +79,7 @@ def main_cgcnn(args, dataset):
                               momentum=args.momentum,
                               weight_decay=args.weight_decay)
     elif args.optim == 'Adam':
-        optimizer = optim.Adam(model.parameters(), args.lr,
+        optimizer = optim.AdamW(model.parameters(), args.lr,
                                weight_decay=args.weight_decay)
     else:
         raise NameError('Only SGD or Adam is allowed as --optim')

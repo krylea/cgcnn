@@ -44,7 +44,7 @@ def parse_args():
     parser.add_argument('--resume', default='')
     parser.add_argument('--start_epoch', type=int, default=0)
     parser.add_argument('--task', default='regression')
-    parser.add_argument('--weight_decay', type=float, default=0.0)
+    parser.add_argument('--weight_decay', type=float, default=1e-5)
     parser.add_argument('--workers', type=int, default=0)
     parser.add_argument('--root_dir')
 
