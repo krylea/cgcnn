@@ -17,7 +17,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
-from torch.optim.lr_scheduler import MultiStepLR
+from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts, MultiStepLR
 
 #from cgcnn.data import collate_pool, get_train_val_test_loader
 #from cgcnn.data import CIFData
@@ -26,7 +26,7 @@ from modify_data import collate_pool, get_train_val_test_loader
 
 #### change: load dataset outside function and pass it as argumnet
 def main_cgcnn(args, dataset):
-    outdir = os.path.join('runs', args.adsorbate)
+    outdir = os.path.join('runs', args.adsorbate, args.run_name)
     if not os.path.exists(outdir):
         os.makedirs(outdir)
 
@@ -99,9 +99,10 @@ def main_cgcnn(args, dataset):
         else:
             print("=> no checkpoint found at '{}'".format(args.resume))
 
-    scheduler = MultiStepLR(optimizer, milestones=args.lr_milestones,
-                            gamma=0.1)
-    
+    #scheduler = MultiStepLR(optimizer, milestones=args.lr_milestones,
+    #                        gamma=0.1)
+    scheduler = CosineAnnealingWarmRestarts(optimizer, T_0=10, T_mult=2)
+
     #### change: store epoch, mae and loss
     epoches, train_mae_errors, train_losses = [], [], []
     val_mae_errors, val_losses = [],[]

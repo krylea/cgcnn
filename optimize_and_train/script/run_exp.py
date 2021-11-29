@@ -47,6 +47,7 @@ def parse_args():
     parser.add_argument('--weight_decay', type=float, default=1e-5)
     parser.add_argument('--workers', type=int, default=0)
     parser.add_argument('--root_dir')
+    parser.add_argument('--run_name')
 
     return parser.parse_args()
 
